@@ -1,5 +1,6 @@
 package services;
 
+import org.coffeeservice.exceptions.CoffeeMenuException;
 import org.coffeeservice.models.Coffee;
 import org.coffeeservice.services.MenuService;
 import org.junit.Test;
@@ -24,8 +25,22 @@ public class MenuServiceTest {
         MenuService menuService = new MenuService();
 
         List<Coffee> menu = menuService.menu();
-
         assertThat(menu, is(expectedMenu));
-
     }
+
+    @Test(expected = CoffeeMenuException.class)
+    public void shouldNotAllowNullOrMissingFields() throws Exception {
+        MenuService menuService = new MenuService("missing-coffee-name.json");
+
+        menuService.menu();
+    }
+
+    @Test(expected = CoffeeMenuException.class)
+    public void shouldNotAllowEmptyFields() throws Exception {
+        MenuService menuService = new MenuService("empty-coffee-order-path.json");
+
+        menuService.menu();
+    }
+
+
 }

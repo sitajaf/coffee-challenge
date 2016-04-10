@@ -1,0 +1,16 @@
+[
+  {
+    "name": "long black",
+    "order_path": "/order/long-black",
+    "price": 3,
+    "caffeine_level": 8,
+    "milk_ratio": 0
+  },
+  {
+    "name": "flat white",
+    "order_path": "",
+    "price": 3.5,
+    "caffeine_level": 5,
+    "milk_ratio": 2
+  }
+]
