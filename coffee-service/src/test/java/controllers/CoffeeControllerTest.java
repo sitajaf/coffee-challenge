@@ -12,9 +12,9 @@ public class CoffeeControllerTest {
     @Test
     public void shouldInvokeMenu() throws Exception {
         MenuService mockMenuService = mock(MenuService.class);
-        CoffeeController controller = new CoffeeController(mockMenuService);
+        CoffeeController controller = new CoffeeController();
 
-        controller.menu();
+        controller.menu(mockMenuService);
 
         verify(mockMenuService).menu();
     }
