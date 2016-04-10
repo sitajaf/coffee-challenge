@@ -1,20 +1,27 @@
 package org.coffeeservice.controllers;
 
+import org.coffeeservice.exceptions.CoffeeMenuException;
+import org.coffeeservice.models.Coffee;
+import org.coffeeservice.services.MenuService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.List;
 
 @RestController
 public class CoffeeController {
 
-    private static final String template = "%d: Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
+    private MenuService menuService;
 
-    @RequestMapping("/contracts")
-    public String greeting(@RequestParam(value="name", defaultValue="World") String name) {
-        return String.format(template, counter.incrementAndGet(), name);
+    @Autowired
+    public CoffeeController(MenuService menuService) {
+        this.menuService = menuService;
+    }
+
+    @RequestMapping(value = "/menu")
+    public List<Coffee> menu() throws CoffeeMenuException {
+        return menuService.menu();
     }
 
 }

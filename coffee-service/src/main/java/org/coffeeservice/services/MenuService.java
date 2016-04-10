@@ -8,12 +8,14 @@ import org.coffeeservice.exceptions.CoffeeMenuException;
 import org.coffeeservice.models.Coffee;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
 
 @NoArgsConstructor
+@Service
 public class MenuService {
 
     private String menuFile;
@@ -23,7 +25,7 @@ public class MenuService {
         this.menuFile = menuFile;
     }
 
-    public List<Coffee> menu() throws Exception {
+    public List<Coffee> menu() throws CoffeeMenuException {
 
         if (StringUtils.isEmpty(this.menuFile)) {
             this.menuFile = "coffee-menu.json";
