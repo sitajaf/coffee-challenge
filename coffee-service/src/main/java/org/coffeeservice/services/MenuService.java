@@ -1,11 +1,11 @@
 package org.coffeeservice.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NoArgsConstructor;
 import org.coffeeservice.exceptions.CoffeeMenuException;
 import org.coffeeservice.models.Coffee;
+import org.coffeeservice.models.Menu;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -25,19 +25,20 @@ public class MenuService {
         this.menuFile = menuFile;
     }
 
-    public List<Coffee> menu() throws CoffeeMenuException {
+    public Menu menu() throws CoffeeMenuException {
 
         if (StringUtils.isEmpty(this.menuFile)) {
             this.menuFile = "coffee-menu.json";
         }
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, true);
         try {
             Resource resource = new ClassPathResource(menuFile);
-            List<Coffee> menu = mapper.readValue(resource.getFile(), new TypeReference<List<Coffee>>() {
+            List<Coffee> coffees = mapper.readValue(resource.getFile(), new TypeReference<List<Coffee>>() {
             });
-            verify(menu);
+            verify(coffees);
+            Menu menu = new Menu();
+            menu.setCoffees(coffees);
             return menu;
         } catch (IOException e) {
             throw new CoffeeMenuException("Error in menu. "+ e.getMessage());
