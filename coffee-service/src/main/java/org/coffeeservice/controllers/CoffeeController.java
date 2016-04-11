@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CoffeeController {
 
-    @RequestMapping(value = "/menu")
+    @RequestMapping(value = "/menu", produces = {"application/json"})
     public Menu menu(MenuService menuService) throws CoffeeMenuException {
         return menuService.menu();
     }
