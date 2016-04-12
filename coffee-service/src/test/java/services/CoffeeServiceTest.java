@@ -9,8 +9,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class CoffeeServiceTest {
     private CoffeeService coffeeService;
@@ -26,9 +25,9 @@ public class CoffeeServiceTest {
     @Test
     public void shouldPlaceOrder() throws Exception {
 
-        final String coffeeName = "latte";
-        OrderNote orderNote = coffeeService.order(coffeeName, order);
-        assertThat(orderNote, is(new OrderNote(coffeeName, 5)));
+        final String pathName = "latte";
+        OrderNote orderNote = coffeeService.order(pathName, order);
+        assertTrue(orderNote.getOrder().contains("/order/"));
 
     }
 

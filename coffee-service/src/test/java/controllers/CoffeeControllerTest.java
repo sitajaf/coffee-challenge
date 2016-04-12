@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 public class CoffeeControllerTest {
-    CoffeeController controller = new CoffeeController();
+    private CoffeeController controller = new CoffeeController();
 
     @Test
     public void shouldInvokeMenu() throws Exception {
@@ -32,7 +32,7 @@ public class CoffeeControllerTest {
         HttpServletResponse mockHttpResponse = mock(HttpServletResponse.class);
 
         final String latte = "latte";
-        OrderNote expectedNote = new OrderNote(latte, 5);
+        OrderNote expectedNote = new OrderNote("/order/234", 5);
         Order order = new Order(latte, Arrays.asList("skim-milk"), 6);
 
         when(mockCoffeeService.order(latte, order)).thenReturn(expectedNote);

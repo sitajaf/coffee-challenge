@@ -16,6 +16,6 @@ public class CoffeeService {
         if (!menuService.exists(coffeeName)) {
             throw new CoffeeOrderException("Coffee not on menu!");
         }
-        return new OrderNote(coffeeName, 5);
+        return new OrderNote("/order/" + coffeeName, 5);
     }
 }
