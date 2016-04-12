@@ -55,8 +55,9 @@ public class MenuService {
     }
 
     public boolean exists(String coffeeName) {
+                    final String order = "/order/";
         return menu.getCoffees()
                 .stream()
-                .anyMatch(coffee -> coffee.getName().equals(coffeeName.trim()));
+                .anyMatch(coffee -> coffee.getOrderPath().equals(order + coffeeName.trim()));
     }
 }

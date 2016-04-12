@@ -49,9 +49,9 @@ public class MenuServiceTest {
     }
 
     @Test
-    public void shouldReturnTrueForExisitingCoffeeOnMenu() throws Exception {
+    public void shouldReturnTrueForExisitingCoffeeOrderOnMenu() throws Exception {
         MenuService menuService = new MenuService("valid-coffee-menu.json");
-        assertTrue(menuService.exists("flat white"));
+        assertTrue(menuService.exists("flat-white"));
     }
 
     @Test
