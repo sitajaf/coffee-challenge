@@ -2,7 +2,6 @@ package org.coffeeservice.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.NoArgsConstructor;
 import org.coffeeservice.exceptions.CoffeeMenuException;
 import org.coffeeservice.models.Coffee;
 import org.coffeeservice.models.Menu;
@@ -61,4 +60,3 @@ public class MenuService {
                 .anyMatch(coffee -> coffee.getName().equals(coffeeName.trim()));
     }
 }
-

@@ -1,6 +1,7 @@
 package org.coffeeservice.controllers;
 
 import org.coffeeservice.exceptions.CoffeeMenuException;
+import org.coffeeservice.exceptions.CoffeeOrderException;
 import org.coffeeservice.models.Menu;
 import org.coffeeservice.models.Order;
 import org.coffeeservice.models.OrderNote;
@@ -24,13 +25,12 @@ public class CoffeeController {
             consumes = {"application/json"}, produces = {"application/json"})
     public OrderNote order(@PathVariable String coffeeName, CoffeeService coffeeService,
                            @Validated @RequestBody Order order,
-                           HttpServletResponse response) {
+                           HttpServletResponse response) throws CoffeeOrderException {
         OrderNote orderNote = coffeeService.order(coffeeName, order);
 
         if (orderNote != null) {
             response.setStatus(HttpServletResponse.SC_CREATED);
         }
-
         return orderNote;
     }
 
