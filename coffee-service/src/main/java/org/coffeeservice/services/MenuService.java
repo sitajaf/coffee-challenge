@@ -55,5 +55,10 @@ public class MenuService {
         }
     }
 
+    public boolean exists(String coffeeName) {
+        return menu.getCoffees()
+                .stream()
+                .anyMatch(coffee -> coffee.getName().equals(coffeeName.trim()));
+    }
 }
 

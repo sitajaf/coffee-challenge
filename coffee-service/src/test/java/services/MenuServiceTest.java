@@ -10,7 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class MenuServiceTest {
     @Test
@@ -46,4 +48,15 @@ public class MenuServiceTest {
         menuService.menu();
     }
 
+    @Test
+    public void shouldReturnTrueForExisitingCoffeeOnMenu() throws Exception {
+        MenuService menuService = new MenuService("valid-coffee-menu.json");
+        assertTrue(menuService.exists("flat white"));
+    }
+
+    @Test
+    public void shouldReturnFlaseForNonExisitingCoffeeOnMenu() throws Exception {
+        MenuService menuService = new MenuService("valid-coffee-menu.json");
+        assertFalse(menuService.exists("Kawa"));
+    }
 }
