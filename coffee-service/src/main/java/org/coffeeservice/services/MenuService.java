@@ -14,34 +14,34 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.util.List;
 
-@NoArgsConstructor
 @Service
 public class MenuService {
 
-    private String menuFile;
+    private Menu menu = new Menu();
 
-    public MenuService(String menuFile) {
-
-        this.menuFile = menuFile;
+    public MenuService() throws CoffeeMenuException {
+        createMenu("coffee-menu.json");
     }
 
-    public Menu menu() throws CoffeeMenuException {
+    public MenuService(String menuFile) throws CoffeeMenuException {
+        createMenu(menuFile);
+    }
 
-        if (StringUtils.isEmpty(this.menuFile)) {
-            this.menuFile = "coffee-menu.json";
-        }
+    public Menu menu() {
+        return this.menu;
+    }
 
+    private Menu createMenu(String menuFile) throws CoffeeMenuException {
         ObjectMapper mapper = new ObjectMapper();
         try {
             Resource resource = new ClassPathResource(menuFile);
             List<Coffee> coffees = mapper.readValue(resource.getFile(), new TypeReference<List<Coffee>>() {
             });
             verify(coffees);
-            Menu menu = new Menu();
             menu.setCoffees(coffees);
             return menu;
         } catch (IOException e) {
-            throw new CoffeeMenuException("Error in menu. "+ e.getMessage());
+            throw new CoffeeMenuException("Error in menu. " + e.getMessage());
         }
     }
 
@@ -54,5 +54,6 @@ public class MenuService {
             }
         }
     }
+
 }
 
