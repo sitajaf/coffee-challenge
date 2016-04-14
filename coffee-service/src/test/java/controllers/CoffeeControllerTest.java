@@ -15,7 +15,9 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
 public class CoffeeControllerTest {
-    private CoffeeController controller = new CoffeeController();
+
+    private CoffeeService mockCoffeeService = mock(CoffeeService.class);
+    private CoffeeController controller = new CoffeeController(mockCoffeeService);
 
     @Test
     public void shouldInvokeMenu() throws Exception {
@@ -28,7 +30,7 @@ public class CoffeeControllerTest {
 
     @Test
     public void shouldCreateAnOrder() throws Exception {
-        CoffeeService mockCoffeeService = mock(CoffeeService.class);
+
         HttpServletResponse mockHttpResponse = mock(HttpServletResponse.class);
 
         final String latte = "latte";
@@ -37,7 +39,7 @@ public class CoffeeControllerTest {
 
         when(mockCoffeeService.order(latte, order)).thenReturn(expectedNote);
 
-        OrderNote note = controller.order(latte, mockCoffeeService, order, mockHttpResponse);
+        OrderNote note = controller.order(latte, order, mockHttpResponse);
 
         assertThat(note, is(expectedNote));
         verify(mockHttpResponse).setStatus(HttpServletResponse.SC_CREATED);

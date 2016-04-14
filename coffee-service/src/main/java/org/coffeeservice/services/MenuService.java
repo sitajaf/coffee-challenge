@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.coffeeservice.exceptions.CoffeeMenuException;
 import org.coffeeservice.models.Coffee;
 import org.coffeeservice.models.Menu;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;

@@ -1,21 +1,38 @@
 package org.coffeeservice.services;
 
-import org.coffeeservice.exceptions.CoffeeMenuException;
 import org.coffeeservice.exceptions.CoffeeOrderException;
+import org.coffeeservice.models.DelaySimulator;
 import org.coffeeservice.models.Order;
 import org.coffeeservice.models.OrderNote;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CoffeeService {
-    private final MenuService menuService;
 
-    public CoffeeService() throws CoffeeMenuException {
-        this.menuService = new MenuService();
+    private MenuService menuService;
+    private DelaySimulator delaySimulator;
+
+    @Autowired
+    public CoffeeService(MenuService menuService, DelaySimulator delaySimulator) {
+        this.menuService = menuService;
+        this.delaySimulator = delaySimulator;
     }
+
+    private int counter;
 
     public OrderNote order(String coffeeName, Order order) throws CoffeeOrderException {
         if (!menuService.exists(coffeeName)) {
             throw new CoffeeOrderException("Coffee not on menu!");
         }
-        return new OrderNote("/order/" + coffeeName, 5);
+        make(coffeeName, order);
+        final String orderPath = "/order/";
+        return new OrderNote(String.format(orderPath, coffeeName), 5);
+    }
+
+    private OrderNote make(String coffeeName, Order order) {
+        counter++;
+
+        return null;
     }
 }

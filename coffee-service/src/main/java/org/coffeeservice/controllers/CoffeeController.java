@@ -7,6 +7,7 @@ import org.coffeeservice.models.Order;
 import org.coffeeservice.models.OrderNote;
 import org.coffeeservice.services.CoffeeService;
 import org.coffeeservice.services.MenuService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +21,16 @@ public class CoffeeController {
         return menuService.menu();
     }
 
+    private CoffeeService coffeeService;
+
+    @Autowired
+    public CoffeeController(CoffeeService coffeeService) {
+        this.coffeeService = coffeeService;
+    }
 
     @RequestMapping(value = "/order/{coffeeName}", method = RequestMethod.POST,
             consumes = {"application/json"}, produces = {"application/json"})
-    public OrderNote order(@PathVariable String coffeeName, CoffeeService coffeeService,
+    public OrderNote order(@PathVariable String coffeeName,
                            @Validated @RequestBody Order order,
                            HttpServletResponse response) throws CoffeeOrderException {
         OrderNote orderNote = coffeeService.order(coffeeName, order);
