@@ -48,6 +48,6 @@ public class CoffeeService {
     }
 
     public void addMachine() {
-        this.machines.add(new CoffeeMachine(new DelaySimulator()));
+        this.machines.add(new CoffeeMachine());
     }
 }
