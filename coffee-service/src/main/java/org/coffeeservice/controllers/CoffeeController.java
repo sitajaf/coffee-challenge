@@ -16,16 +16,16 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class CoffeeController {
 
-    @RequestMapping(value = "/menu", produces = {"application/json"})
-    public Menu menu(MenuService menuService) throws CoffeeMenuException {
-        return menuService.menu();
-    }
-
     private CoffeeService coffeeService;
 
     @Autowired
     public CoffeeController(CoffeeService coffeeService) {
         this.coffeeService = coffeeService;
+    }
+
+    @RequestMapping(value = "/menu", produces = {"application/json"})
+    public Menu menu(MenuService menuService) throws CoffeeMenuException {
+        return menuService.menu();
     }
 
     @RequestMapping(value = "/order/{coffeeName}", method = RequestMethod.POST,

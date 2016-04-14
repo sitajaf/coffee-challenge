@@ -1,7 +1,7 @@
 package services;
 
 import org.coffeeservice.exceptions.CoffeeOrderException;
-import org.coffeeservice.models.DelaySimulator;
+import org.coffeeservice.models.CoffeeMachine;
 import org.coffeeservice.models.Order;
 import org.coffeeservice.models.OrderNote;
 import org.coffeeservice.services.CoffeeService;
@@ -17,14 +17,13 @@ import static org.mockito.Mockito.when;
 
 public class CoffeeServiceTest {
     MenuService mockMenuService = mock(MenuService.class);
-    DelaySimulator mockDelaySimulator = mock(DelaySimulator.class);
 
     private CoffeeService coffeeService;
     private Order order;
 
     @Before
     public void setUp() throws Exception {
-        coffeeService = new CoffeeService(mockMenuService, mockDelaySimulator);
+        coffeeService = new CoffeeService(mockMenuService);
         order = new Order("small", Arrays.asList("skim-milk", "sugar"), 4);
     }
 

@@ -11,12 +11,10 @@ import org.springframework.stereotype.Service;
 public class CoffeeService {
 
     private MenuService menuService;
-    private DelaySimulator delaySimulator;
 
     @Autowired
-    public CoffeeService(MenuService menuService, DelaySimulator delaySimulator) {
+    public CoffeeService(MenuService menuService) {
         this.menuService = menuService;
-        this.delaySimulator = delaySimulator;
     }
 
     private int counter;
