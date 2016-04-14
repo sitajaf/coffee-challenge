@@ -26,21 +26,19 @@ public class CoffeeService {
         this.machines.add(new CoffeeMachine(new DelaySimulator()));
     }
 
-    private int counter;
+    private int counter = 0;
 
     public OrderNote order(String coffeeName, Order order) throws CoffeeOrderException {
         if (!menuService.exists(coffeeName)) {
             throw new CoffeeOrderException("Coffee not on menu!");
         }
-        make(coffeeName, order);
-        final String orderPath = "/order/";
-        return new OrderNote(String.format(orderPath, coffeeName), 5);
+        return make(coffeeName, order);
     }
 
     private OrderNote make(String coffeeName, Order order) {
         counter++;
-
-        return null;
+        final String orderPath = "/order/%d";
+        return new OrderNote(String.format(orderPath, counter), 5);
     }
 
     public int machines() {

@@ -29,5 +29,4 @@ public class CoffeeMachine {
         return this.isBusy;
     }
 
-
 }

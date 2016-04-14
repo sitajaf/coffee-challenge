@@ -31,12 +31,14 @@ public class CoffeeServiceTest {
     }
 
     @Test
-    public void shouldPlaceOrder() throws Exception {
-        final String name = "latte";
-        when(mockMenuService.exists(name)).thenReturn(true);
+    public void shouldStartWithOneMachine() throws Exception {
+        assertThat(coffeeService.machines(), is(1));
+    }
 
-        OrderNote orderNote = coffeeService.order(name, order);
-        assertTrue(orderNote.getOrder().contains("/order/"));
+    @Test
+    public void shouldAddAMachine() throws Exception {
+        coffeeService.addMachine();
+        assertThat(coffeeService.machines(), is(2));
     }
 
     @Test(expected = CoffeeOrderException.class)
@@ -47,13 +49,26 @@ public class CoffeeServiceTest {
     }
 
     @Test
-    public void shouldStartWithOneMachine() throws Exception {
-        assertThat(coffeeService.machines(), is(1));
+    public void shouldPlaceAnOrder() throws Exception {
+        final String name = "latte";
+        when(mockMenuService.exists(name)).thenReturn(true);
+
+        OrderNote orderNote = coffeeService.order(name, order);
+        assertThat(orderNote.getOrder(), is("/order/1"));
     }
 
     @Test
-    public void shouldAddAMachine() throws Exception {
-        coffeeService.addMachine();
-        assertThat(coffeeService.machines(), is(2));
+    public void shouldPlaceAnotherOrder() throws Exception {
+        final String name = "latte";
+        when(mockMenuService.exists(name)).thenReturn(true);
+
+        coffeeService.order(name, order);
+        OrderNote orderNote = coffeeService.order(name, order);
+        assertThat(orderNote.getOrder(), is("/order/2"));
     }
+
+
+
+
+
 }
