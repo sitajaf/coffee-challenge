@@ -9,21 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class CoffeeService {
 
     private MenuService menuService;
-    private List<CoffeeMachine> machines;
+    private CoffeeMachine coffeeMachine;
 
     @Autowired
-    public CoffeeService(MenuService menuService) {
+    public CoffeeService(MenuService menuService, CoffeeMachine coffeeMachine) {
         this.menuService = menuService;
-        this.machines = new ArrayList<>();
-
-        this.machines.add(new CoffeeMachine(new DelaySimulator()));
+        this.coffeeMachine = coffeeMachine;
     }
 
     private int counter = 0;
@@ -41,11 +38,4 @@ public class CoffeeService {
         return new OrderNote(String.format(orderPath, counter), 5);
     }
 
-    public int machines() {
-        return machines.size();
-    }
-
-    public void addMachine() {
-        this.machines.add(new CoffeeMachine());
-    }
 }
