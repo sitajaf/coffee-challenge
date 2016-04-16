@@ -13,10 +13,6 @@ public class CoffeeMachine {
         this.delaySimulator = delaySimulator;
     }
 
-    public CoffeeMachine() {
-        this.delaySimulator = new DelaySimulator();
-    }
-
     public void start(String latte, List<String> extras) throws CoffeeMachineException {
         this.isBusy = true;
 

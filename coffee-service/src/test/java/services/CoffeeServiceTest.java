@@ -1,5 +1,6 @@
 package services;
 
+import org.coffeeservice.enums.OrderStatus;
 import org.coffeeservice.exceptions.CoffeeOrderException;
 import org.coffeeservice.models.CoffeeMachine;
 import org.coffeeservice.models.Order;
@@ -17,10 +18,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class CoffeeServiceTest {
-    MenuService mockMenuService = mock(MenuService.class);
-    CoffeeMachine mockCoffeeMachine = mock(CoffeeMachine.class);
+    private MenuService mockMenuService = mock(MenuService.class);
+    private CoffeeMachine mockCoffeeMachine = mock(CoffeeMachine.class);
 
-    final String latte = "latte";
+    private final String latte = "latte";
+    private final String flatWhite = "flat-white";
+    private final String orderPath1 = "/order/1";
+    private final String orderPath2 = "/order/2";
     private CoffeeService coffeeService;
     private Order order;
 
@@ -30,6 +34,7 @@ public class CoffeeServiceTest {
         order = new Order("small", Arrays.asList("skim-milk", "sugar"), 4);
 
         when(mockMenuService.exists(latte)).thenReturn(true);
+        when(mockMenuService.exists(flatWhite)).thenReturn(true);
     }
 
     @Test(expected = CoffeeOrderException.class)
@@ -41,14 +46,30 @@ public class CoffeeServiceTest {
     @Test
     public void shouldPlaceAnOrder() throws Exception {
         OrderNote orderNote = coffeeService.order(latte, order);
-        assertThat(orderNote.getOrder(), is("/order/1"));
+        assertThat(orderNote.getOrder(), is(orderPath1));
     }
 
     @Test
     public void shouldPlaceAnotherOrder() throws Exception {
         coffeeService.order(latte, order);
         OrderNote orderNote = coffeeService.order(latte, order);
-        assertThat(orderNote.getOrder(), is("/order/2"));
+        assertThat(orderNote.getOrder(), is(orderPath2));
     }
-    
+
+    @Test
+    public void shouldReturnMakingAsOrderStatus() throws Exception {
+        when(mockCoffeeMachine.isBusy()).thenReturn(false);
+
+        OrderNote orderNote = coffeeService.order(latte, order);
+
+        assertThat(coffeeService.statusOf(orderNote.getOrder()), is(OrderStatus.MAKING));
+    }
+
+    @Test
+    public void shouldReturnQueuedAsOrderStatus() throws Exception {
+        when(mockCoffeeMachine.isBusy()).thenReturn(true);
+
+        coffeeService.order(latte, order);
+        assertThat(coffeeService.statusOf(orderPath1), is(OrderStatus.QUEUED));
+    }
 }
