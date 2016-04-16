@@ -2,7 +2,6 @@ package services;
 
 import org.coffeeservice.exceptions.CoffeeOrderException;
 import org.coffeeservice.models.CoffeeMachine;
-import org.coffeeservice.models.DelaySimulator;
 import org.coffeeservice.models.Order;
 import org.coffeeservice.models.OrderNote;
 import org.coffeeservice.services.CoffeeService;
@@ -21,7 +20,7 @@ public class CoffeeServiceTest {
     MenuService mockMenuService = mock(MenuService.class);
     CoffeeMachine mockCoffeeMachine = mock(CoffeeMachine.class);
 
-    final String name = "kawa";
+    final String latte = "latte";
     private CoffeeService coffeeService;
     private Order order;
 
@@ -29,29 +28,27 @@ public class CoffeeServiceTest {
     public void setUp() throws Exception {
         coffeeService = new CoffeeService(mockMenuService, mockCoffeeMachine);
         order = new Order("small", Arrays.asList("skim-milk", "sugar"), 4);
+
+        when(mockMenuService.exists(latte)).thenReturn(true);
     }
 
     @Test(expected = CoffeeOrderException.class)
     public void shouldNotPlaceOrderIfCoffeeNoOnMenu() throws Exception {
-        when(mockMenuService.exists(name)).thenReturn(false);
-        coffeeService.order(name, order);
+        when(mockMenuService.exists(latte)).thenReturn(false);
+        coffeeService.order(latte, order);
     }
 
     @Test
     public void shouldPlaceAnOrder() throws Exception {
-        when(mockMenuService.exists(name)).thenReturn(true);
-
-        OrderNote orderNote = coffeeService.order(name, order);
+        OrderNote orderNote = coffeeService.order(latte, order);
         assertThat(orderNote.getOrder(), is("/order/1"));
     }
 
     @Test
     public void shouldPlaceAnotherOrder() throws Exception {
-        when(mockMenuService.exists(name)).thenReturn(true);
-
-        coffeeService.order(name, order);
-        OrderNote orderNote = coffeeService.order(name, order);
+        coffeeService.order(latte, order);
+        OrderNote orderNote = coffeeService.order(latte, order);
         assertThat(orderNote.getOrder(), is("/order/2"));
     }
-
+    
 }
