@@ -43,7 +43,7 @@ public class CoffeeService {
             orders.put(orderPath, OrderStatus.QUEUED);
         } else {
             orders.put(orderPath, OrderStatus.MAKING);
-            coffeeMachine.start(coffeeName, order.getExtras());
+            coffeeMachine.start(coffeeName, order.getExtras(), () -> this.orders.replace(orderPath, OrderStatus.READY));
         }
 
         return new OrderNote(orderPath, 5);

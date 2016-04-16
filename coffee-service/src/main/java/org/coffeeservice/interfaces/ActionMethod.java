@@ -1,4 +1,4 @@
-package org.coffeeservice;
+package org.coffeeservice.interfaces;
 
 @FunctionalInterface
 public interface ActionMethod {

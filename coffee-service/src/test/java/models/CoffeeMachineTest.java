@@ -1,6 +1,6 @@
 package models;
 
-import org.coffeeservice.ActionMethod;
+import org.coffeeservice.interfaces.ActionMethod;
 import org.coffeeservice.models.CoffeeMachine;
 import org.coffeeservice.models.DelaySimulator;
 import org.junit.Test;
@@ -19,9 +19,9 @@ public class CoffeeMachineTest {
 
     @Test
     public void shouldStartMakingCoffee() throws Exception {
-        machine.start("latte", Arrays.asList("skim-milk, sugar"));
+        machine.start("latte", Arrays.asList("skim-milk, sugar"), ()->{});
         assertTrue(machine.isBusy());
-        verify(mockDelaySimulator).simulate(any(ActionMethod.class));
+        verify(mockDelaySimulator).simulate(any(ActionMethod.class), any(ActionMethod.class));
     }
 
 }
