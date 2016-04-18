@@ -22,7 +22,6 @@ public class CoffeeMachine {
         isBusy = true;
         System.out.println(String.format("Making %s with %s", latte, extras.toString()));
 
-        statusAction.execute(OrderStatus.MAKING);
         delaySimulator.simulate(statusAction, isBusy -> this.isBusy = isBusy);
     }
 
