@@ -12,6 +12,7 @@ import java.util.Random;
 @Component
 public class DelaySimulator {
     private final int NORMAL_DURATION = 2;
+    int MINUTE = 1000 * 60;
 
     public void simulate(ActionMethod statusAction, IsBusyAction isBusyAction) throws CoffeeMachineException {
         Thread thread = new Thread(new CoffeeMachineRunner(statusAction, isBusyAction));
@@ -22,7 +23,6 @@ public class DelaySimulator {
         Random random = new Random();
         int DELAYED_DURATION = 3;
         int ONE = 1;
-        int MINUTE = 1000 * 60;
 
         return (random.nextInt((DELAYED_DURATION - NORMAL_DURATION) + ONE) + NORMAL_DURATION) * MINUTE;
     }
@@ -46,7 +46,7 @@ public class DelaySimulator {
             try {
                 stopWatch.start();
                 while (stopWatch.getTime() <= delay) {
-                    if (!delaySet && stopWatch.getTime() > NORMAL_DURATION) {
+                    if (!delaySet && stopWatch.getTime() > NORMAL_DURATION * MINUTE) {
                         statusAction.execute(OrderStatus.DELAYED);
                         this.delaySet = true;
                     }
