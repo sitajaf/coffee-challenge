@@ -1,6 +1,7 @@
 package models;
 
 import org.coffeeservice.interfaces.ActionMethod;
+import org.coffeeservice.interfaces.IsBusyAction;
 import org.coffeeservice.models.CoffeeMachine;
 import org.coffeeservice.models.DelaySimulator;
 import org.junit.Test;
@@ -13,15 +14,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class CoffeeMachineTest {
-    DelaySimulator mockDelaySimulator = mock(DelaySimulator.class);
+    private DelaySimulator mockDelaySimulator = mock(DelaySimulator.class);
 
-    CoffeeMachine machine = new CoffeeMachine(mockDelaySimulator);
+    private CoffeeMachine machine = new CoffeeMachine(mockDelaySimulator);
 
     @Test
     public void shouldStartMakingCoffee() throws Exception {
-        machine.start("latte", Arrays.asList("skim-milk, sugar"), ()->{});
+        ActionMethod statusAction = status -> {};
+        machine.start("latte", Arrays.asList("skim-milk, sugar"), statusAction);
         assertTrue(machine.isBusy());
-        verify(mockDelaySimulator).simulate(any(ActionMethod.class), any(ActionMethod.class));
+        verify(mockDelaySimulator).simulate(any(ActionMethod.class), any(IsBusyAction.class));
     }
 
 }

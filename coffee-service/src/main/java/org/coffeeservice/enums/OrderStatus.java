@@ -4,5 +4,5 @@ public enum OrderStatus {
     READY,
     MAKING,
     QUEUED,
-    DELAYED;
+    DELAYED
 }

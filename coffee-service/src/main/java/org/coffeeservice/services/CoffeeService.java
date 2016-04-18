@@ -19,6 +19,7 @@ public class CoffeeService {
     private CoffeeMachine coffeeMachine;
     private Map<String, OrderStatus> orders;
 
+
     @Autowired
     public CoffeeService(MenuService menuService, CoffeeMachine coffeeMachine) {
         this.menuService = menuService;
@@ -43,8 +44,9 @@ public class CoffeeService {
             orders.put(orderPath, OrderStatus.QUEUED);
         } else {
             orders.put(orderPath, OrderStatus.MAKING);
-            coffeeMachine.start(coffeeName, order.getExtras(), () -> this.orders.replace(orderPath, OrderStatus.READY));
+            coffeeMachine.start(coffeeName, order.getExtras(), status -> this.orders.replace(orderPath, status));
         }
+
 
         return new OrderNote(orderPath, 5);
     }

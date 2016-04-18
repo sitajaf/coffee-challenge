@@ -1,25 +1,29 @@
 package org.coffeeservice.models;
 
+import org.coffeeservice.enums.OrderStatus;
 import org.coffeeservice.exceptions.CoffeeMachineException;
 import org.coffeeservice.interfaces.ActionMethod;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class CoffeeMachine {
-
-    private DelaySimulator delaySimulator;
     private boolean isBusy;
+    private DelaySimulator delaySimulator;
 
+    @Autowired
     public CoffeeMachine(DelaySimulator delaySimulator) {
         this.delaySimulator = delaySimulator;
     }
 
-    public void start(String latte, List<String> extras, ActionMethod setStatusAction) throws CoffeeMachineException {
-        this.isBusy = true;
-
+    public void start(String latte, List<String> extras, ActionMethod statusAction) throws CoffeeMachineException {
+        isBusy = true;
         System.out.println(String.format("Making %s with %s", latte, extras.toString()));
 
-        delaySimulator.simulate(() -> this.isBusy = false, setStatusAction);
+        statusAction.execute(OrderStatus.MAKING);
+        delaySimulator.simulate(statusAction, isBusy -> this.isBusy = isBusy);
     }
 
     public boolean isBusy() {
