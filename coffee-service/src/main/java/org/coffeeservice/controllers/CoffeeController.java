@@ -1,5 +1,6 @@
 package org.coffeeservice.controllers;
 
+import org.coffeeservice.enums.OrderStatus;
 import org.coffeeservice.exceptions.CoffeeMachineException;
 import org.coffeeservice.exceptions.CoffeeMenuException;
 import org.coffeeservice.exceptions.CoffeeOrderException;
@@ -13,6 +14,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.server.PathParam;
+import java.util.HashMap;
 
 @RestController
 public class CoffeeController {
@@ -42,4 +45,11 @@ public class CoffeeController {
         return orderNote;
     }
 
+    @RequestMapping(value = "/order/{orderNumber}", method = RequestMethod.GET, produces = {"application/json"})
+    public HashMap<String, OrderStatus> status(@PathVariable("orderNumber") int orderNumber) {
+        OrderStatus orderStatus = coffeeService.statusOf(String.format("/order/%d", orderNumber));
+        HashMap<String, OrderStatus> status = new HashMap<>();
+        status.put("status", orderStatus);
+        return status;
+    }
 }

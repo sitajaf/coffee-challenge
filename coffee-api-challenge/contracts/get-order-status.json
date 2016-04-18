@@ -29,7 +29,7 @@
   "examples": {
     "default": {
       "request": {
-        "uri": "http://localhost:4567/order/123"
+        "uri": "http://localhost:4567/order/1"
       },
       "response": {
         "body": {

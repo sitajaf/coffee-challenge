@@ -1,6 +1,7 @@
 package controllers;
 
 import org.coffeeservice.controllers.CoffeeController;
+import org.coffeeservice.enums.OrderStatus;
 import org.coffeeservice.models.Order;
 import org.coffeeservice.models.OrderNote;
 import org.coffeeservice.services.CoffeeService;
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -43,5 +45,14 @@ public class CoffeeControllerTest {
 
         assertThat(note, is(expectedNote));
         verify(mockHttpResponse).setStatus(HttpServletResponse.SC_CREATED);
+    }
+
+    @Test
+    public void shouldInvokeStatusInService() throws Exception {
+        int orderNumber = 2;
+        when(mockCoffeeService.statusOf("/order/" + orderNumber)).thenReturn(OrderStatus.DELAYED);
+
+        HashMap<String, OrderStatus> status = controller.status(orderNumber);
+        assertThat(status.get("status"), is(OrderStatus.DELAYED));
     }
 }

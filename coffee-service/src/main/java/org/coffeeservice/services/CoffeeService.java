@@ -52,7 +52,6 @@ public class CoffeeService {
     }
 
     public OrderStatus statusOf(String orderPath) {
-        System.out.println("orders: " + orders);
         return orders.get(orderPath);
     }
 
