@@ -72,4 +72,9 @@ public class CoffeeServiceTest {
         coffeeService.order(latte, order);
         assertThat(coffeeService.statusOf(orderPath1), is(OrderStatus.QUEUED));
     }
+
+    @Test(expected = CoffeeOrderException.class)
+    public void shouldNotGetStatusOfInvalidOrder() throws Exception{
+        coffeeService.statusOf("/order/342");
+    }
 }

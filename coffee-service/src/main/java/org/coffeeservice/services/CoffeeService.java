@@ -51,7 +51,10 @@ public class CoffeeService {
         return new OrderNote(orderPath, 5);
     }
 
-    public OrderStatus statusOf(String orderPath) {
+    public OrderStatus statusOf(String orderPath) throws CoffeeOrderException {
+        if(!orders.containsKey(orderPath)){
+            throw new CoffeeOrderException("Invalid Order!");
+        }
         return orders.get(orderPath);
     }
 
