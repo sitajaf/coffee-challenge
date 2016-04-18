@@ -44,7 +44,13 @@ public class CoffeeService {
             orders.put(orderPath, OrderStatus.QUEUED);
         } else {
             orders.put(orderPath, OrderStatus.MAKING);
-            coffeeMachine.start(coffeeName, order.getExtras(), status -> this.orders.replace(orderPath, status));
+            coffeeMachine.start(coffeeName, order.getExtras(), status -> {
+                this.orders.replace(orderPath, status);
+//                TODO: implement calling next order
+//                if(status == OrderStatus.READY){
+//                    nextOrder();
+//                }
+            });
         }
 
 

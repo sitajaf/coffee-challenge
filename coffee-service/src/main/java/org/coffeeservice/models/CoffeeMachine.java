@@ -1,6 +1,5 @@
 package org.coffeeservice.models;
 
-import org.coffeeservice.enums.OrderStatus;
 import org.coffeeservice.exceptions.CoffeeMachineException;
 import org.coffeeservice.interfaces.ActionMethod;
 import org.springframework.beans.factory.annotation.Autowired;

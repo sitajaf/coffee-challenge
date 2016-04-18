@@ -11,27 +11,19 @@ import java.util.Random;
 
 @Component
 public class DelaySimulator {
-    private final int NORMAL_DURATION = 2;
-    int MINUTE = 1000 * 60;
 
     public void simulate(ActionMethod statusAction, IsBusyAction isBusyAction) throws CoffeeMachineException {
         Thread thread = new Thread(new CoffeeMachineRunner(statusAction, isBusyAction));
         thread.start();
     }
 
-    private int getDelay() {
-        Random random = new Random();
-        int DELAYED_DURATION = 3;
-        int ONE = 1;
-
-        return (random.nextInt((DELAYED_DURATION - NORMAL_DURATION) + ONE) + NORMAL_DURATION) * MINUTE;
-    }
-
     private class CoffeeMachineRunner implements Runnable {
         private final StopWatch stopWatch;
         private final ActionMethod statusAction;
         private final IsBusyAction isBusyAction;
+        private final int NORMAL_DURATION = 2;
 
+        private int MINUTE = 1000 * 60;
         private boolean delaySet = false;
 
         CoffeeMachineRunner(ActionMethod statusAction, IsBusyAction isBusyAction) {
@@ -53,7 +45,6 @@ public class DelaySimulator {
                 }
                 statusAction.execute(OrderStatus.READY);
                 System.out.println("Coffee is ready!");
-
             } catch (Exception e) {
                 System.out.println("A problem while making the coffee");
                 e.printStackTrace();
@@ -61,6 +52,14 @@ public class DelaySimulator {
                 stopWatch.stop();
                 isBusyAction.execute(false);
             }
+        }
+
+        private int getDelay() {
+            Random random = new Random();
+            int DELAYED_DURATION = 3;
+            int ONE = 1;
+            //TODO: read the durations from properties file.
+            return (random.nextInt((DELAYED_DURATION - NORMAL_DURATION) + ONE) + NORMAL_DURATION) * MINUTE;
         }
     }
 
