@@ -17,7 +17,7 @@ public class CoffeeService {
 
     private MenuService menuService;
     private CoffeeMachine coffeeMachine;
-    private Map<String, OrderStatus> orders;
+    private Map<String, Order> orders;
 
 
     @Autowired
@@ -41,11 +41,13 @@ public class CoffeeService {
         String orderPath = String.format("/order/%d", counter);
 
         if (coffeeMachine.isBusy()) {
-            orders.put(orderPath, OrderStatus.QUEUED);
+            order.setStatus(OrderStatus.QUEUED);
+            orders.put(orderPath, order);
         } else {
-            orders.put(orderPath, OrderStatus.MAKING);
+            order.setStatus(OrderStatus.MAKING);
+            orders.put(orderPath, order );
             coffeeMachine.start(coffeeName, order.getExtras(), status -> {
-                this.orders.replace(orderPath, status);
+                this.orders.get(orderPath).setStatus(status);
 //                TODO: implement calling next order
 //                if(status == OrderStatus.READY){
 //                    nextOrder();
@@ -61,7 +63,7 @@ public class CoffeeService {
         if(!orders.containsKey(orderPath)){
             throw new CoffeeOrderException("Invalid Order!");
         }
-        return orders.get(orderPath);
+        return orders.get(orderPath).getStatus();
     }
 
 }
