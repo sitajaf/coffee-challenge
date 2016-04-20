@@ -17,9 +17,9 @@ public class CoffeeMachine {
         this.delaySimulator = delaySimulator;
     }
 
-    public void start(String latte, List<String> extras, ActionMethod statusAction) throws CoffeeMachineException {
+    public void start(String coffeeName, List<String> extras, ActionMethod statusAction) throws CoffeeMachineException {
         isBusy = true;
-        System.out.println(String.format("Making %s with %s", latte, extras.toString()));
+        System.out.println(String.format("Making %s with %s", coffeeName, extras.toString()));
 
         delaySimulator.simulate(statusAction, isBusy -> this.isBusy = isBusy);
     }

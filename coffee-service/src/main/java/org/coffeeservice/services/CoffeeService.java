@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Predicate;
 
 @Service
 public class CoffeeService {
@@ -44,23 +45,40 @@ public class CoffeeService {
             order.setStatus(OrderStatus.QUEUED);
             orders.put(orderPath, order);
         } else {
-            order.setStatus(OrderStatus.MAKING);
-            orders.put(orderPath, order );
-            coffeeMachine.start(coffeeName, order.getExtras(), status -> {
-                this.orders.get(orderPath).setStatus(status);
-//                TODO: implement calling next order
-//                if(status == OrderStatus.READY){
-//                    nextOrder();
-//                }
-            });
+            orders.put(orderPath, order);
+            startMachine(coffeeName, order, orderPath);
         }
 
+        int waitTime = 2; //TODO: ready from property
+        return new OrderNote(orderPath, waitTime);
+    }
 
-        return new OrderNote(orderPath, 5);
+    private void startMachine(String coffeeName, Order order, String orderPath) throws CoffeeMachineException {
+        order.setStatus(OrderStatus.MAKING);
+        coffeeMachine.start(coffeeName, order.getExtras(), status -> {
+            this.orders.get(orderPath).setStatus(status);
+            if (status == OrderStatus.READY) {
+                nextOrder(coffeeName);
+            }
+        });
+    }
+
+    private void nextOrder(String coffeeName) throws CoffeeMachineException {
+        Predicate<Map.Entry<String, Order>> condition = entryValue -> entryValue.getValue().getStatus().equals(OrderStatus.QUEUED);
+
+        if (this.orders.entrySet().stream().anyMatch(condition)) {
+            Map.Entry<String, Order> entry = this.orders.entrySet()
+                    .stream()
+                    .filter(condition)
+                    .findFirst()
+                    .get();
+            startMachine(coffeeName, this.orders.get(entry.getKey()), entry.getKey());
+        }
+
     }
 
     public OrderStatus statusOf(String orderPath) throws CoffeeOrderException {
-        if(!orders.containsKey(orderPath)){
+        if (!orders.containsKey(orderPath)) {
             throw new CoffeeOrderException("Invalid Order!");
         }
         return orders.get(orderPath).getStatus();
