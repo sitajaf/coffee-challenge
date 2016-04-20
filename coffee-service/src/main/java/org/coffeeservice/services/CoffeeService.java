@@ -34,10 +34,11 @@ public class CoffeeService {
         if (!menuService.exists(coffeeName)) {
             throw new CoffeeOrderException("Coffee not on menu!");
         }
-        return make(coffeeName, order);
+        order.setCoffeeName(coffeeName);
+        return make(order);
     }
 
-    private OrderNote make(String coffeeName, Order order) throws CoffeeMachineException {
+    private OrderNote make(Order order) throws CoffeeMachineException {
         counter++;
         String orderPath = String.format("/order/%d", counter);
 
@@ -46,24 +47,24 @@ public class CoffeeService {
             orders.put(orderPath, order);
         } else {
             orders.put(orderPath, order);
-            startMachine(coffeeName, order, orderPath);
+            startMachine(order, orderPath);
         }
 
         int waitTime = 2; //TODO: ready from property
         return new OrderNote(orderPath, waitTime);
     }
 
-    private void startMachine(String coffeeName, Order order, String orderPath) throws CoffeeMachineException {
+    private void startMachine(Order order, String orderPath) throws CoffeeMachineException {
         order.setStatus(OrderStatus.MAKING);
-        coffeeMachine.start(coffeeName, order.getExtras(), status -> {
+        coffeeMachine.start(order.getCoffeeName(), order.getExtras(), status -> {
             this.orders.get(orderPath).setStatus(status);
             if (status == OrderStatus.READY) {
-                nextOrder(coffeeName);
+                nextOrder();
             }
         });
     }
 
-    private void nextOrder(String coffeeName) throws CoffeeMachineException {
+    private void nextOrder() throws CoffeeMachineException {
         Predicate<Map.Entry<String, Order>> condition = entryValue -> entryValue.getValue().getStatus().equals(OrderStatus.QUEUED);
 
         if (this.orders.entrySet().stream().anyMatch(condition)) {
@@ -72,7 +73,7 @@ public class CoffeeService {
                     .filter(condition)
                     .findFirst()
                     .get();
-            startMachine(coffeeName, this.orders.get(entry.getKey()), entry.getKey());
+            startMachine(this.orders.get(entry.getKey()), entry.getKey());
         }
 
     }

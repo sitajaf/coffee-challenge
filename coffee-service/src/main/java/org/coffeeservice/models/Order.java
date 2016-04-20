@@ -22,6 +22,8 @@ public class Order {
 
     @JsonIgnore
     OrderStatus status;
+    @JsonIgnore
+    String coffeeName;
 
     public Order(String size, List<String> extras, int pickUpTime) {
         this.size = size;
